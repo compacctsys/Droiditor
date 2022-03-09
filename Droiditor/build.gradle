@@ -1,0 +1,108 @@
+apply plugin: 'com.android.library'
+
+
+def source_dir = "/Users/rich/Documents/Code/Android Studio Projects/Droiditor/Droiditor/build/outputs/aar/"
+def destination_dir = "/Users/rich/Documents/work/projects/droiditor/code/HelloWorld/app/libs"
+
+def output_file_name = "droiditor.aar"
+
+//Copies the output_file_name FROM sourc_dir INTO destination_dir
+task exportAAR(type: Copy) {
+    from(source_dir)
+    into(destination_dir)
+    include(output_file_name)
+}
+
+//Deletes the file from the source_dir + output_file_name
+task deleteAAR(type: Delete) {
+    delete source_dir+output_file_name
+}
+
+task deleteOutAAR(type: Delete){
+    delete destination_dir+'/'+output_file_name
+}
+
+//To make sure build happens before exportAAR is executed and to ensure that deleteAAR is called after exportAAR.
+exportAAR.dependsOn(build).dependsOn(deleteOutAAR).finalizedBy(deleteAAR)
+
+android {
+    signingConfigs {
+        NetworkDiagnosis {
+            keyAlias 'darkal'
+            keyPassword '333333'
+            storeFile file('./darkal.jks')
+            storePassword '333333'
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+    }
+    compileSdkVersion 29
+    dataBinding {
+        enabled = true
+    }
+    defaultConfig {
+        minSdkVersion 29
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        resConfigs "zh"
+        signingConfig signingConfigs.NetworkDiagnosis
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.NetworkDiagnosis
+        }
+        debug {
+            signingConfig signingConfigs.NetworkDiagnosis
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = output_file_name
+        }
+    }
+}
+
+dependencies {
+    // ARCore (Google Play Services for AR) library.
+//    implementation 'com.google.ar:core:1.18.0'
+    implementation 'com.opencsv:opencsv:5.2'
+    implementation 'org.zeromq:jeromq:0.5.2'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    testImplementation 'junit:junit:4.13'
+
+
+    compile 'org.apache.httpcomponents:httpcore:4.4.1'
+    compile 'org.apache.httpcomponents:httpclient:4.5'
+    implementation("net.lightbody.bmp:mitm:2.1.5")
+    implementation("net.lightbody.bmp:browsermob-core:2.1.5")
+
+    implementation("commons-io:commons-io:2.8.0")
+
+    implementation('net.lightbody.bmp:littleproxy:1.1.0-beta-bmp-17')
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.56'
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.56'
+    implementation 'dnsjava:dnsjava:3.3.1'
+    implementation 'com.google.mlkit:face-detection:16.1.1'
+
+
+
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+

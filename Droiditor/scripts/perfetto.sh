@@ -1,0 +1,4 @@
+# https://ui.perfetto.dev/#!/record?p=instructions
+echo 'CgUIgEYgAQoFCIAKIAESHwodCg1hbmRyb2lkLnBvd2Vy0gYLCOgHEAIQARADGAESHgocChNsaW51eC5wcm9jZXNzX3N0YXRzEAG6BgIQARIdChsKD2xpbnV4LnN5c19zdGF0c8IGByjoBzABMAQSdApyCgxsaW51eC5mdHJhY2WiBmEKDHNjaGVkX3N3aXRjaAoOc3VzcGVuZF9yZXN1bWUKEnNjaGVkX3Byb2Nlc3NfZXhpdAoSc2NoZWRfcHJvY2Vzc19mcmVlCgx0YXNrX25ld3Rhc2sKC3Rhc2tfcmVuYW1lGMCpB0ABSMQTUIDKte4BaLDqAQ==' |
+base64 --decode |
+adb shell "perfetto -c - -o /data/misc/perfetto-traces/trace"

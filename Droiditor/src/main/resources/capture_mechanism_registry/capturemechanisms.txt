@@ -1,0 +1,13 @@
+com.cambridge.CaptureMechanisms.Sensors.SensorCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.JSONDataLogger
+com.cambridge.CaptureMechanisms.Audio.AudioCaptureNew, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.Audio.MicrophoneCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.Camera.CameraShotCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.YuvImageDataLogger
+com.cambridge.CaptureMechanisms.Screen.ScreenShotCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.BitmapDataLogger
+com.cambridge.CaptureMechanisms.Screen.ScreenCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.Network.NetworkCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.Metrics.FPSCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.Metrics.MemoryCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.Metrics.PowerCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.Metrics.StorageCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.Input.InputCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.CSVDataLogger
+com.cambridge.CaptureMechanisms.General.GeneralCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.JSONDataLogger

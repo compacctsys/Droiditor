@@ -1,0 +1,67 @@
+
+
+To add custom attributes to the manifest, use the meta-data property:
+https://developer.android.com/guide/topics/manifest/meta-data-element.html
+<meta-data android:name="do_capture_sensors" android:value="true" />
+
+To measure elapsed time, use: System.nanoTime()
+
+*********** CPU AND POWER WITH PERFETTO ***********
+
+1. configure a trace to be run: https://ui.perfetto.dev/#!/record?p=instructions
+2. either paste the instructions in step 1 into the terminal and run it, or save it to a bash script and run it that way.
+3. when the trace is finished, export it to the current folder your terminal is running from: adb pull /data/misc/perfetto-traces/trace .
+4. process the trace with trace_processer so that you get a sqlite DB. To do this, either follow the instructions here (https://perfetto.dev/docs/quickstart/trace-analysis) or easier, use the trace_processor.py file that chris posted in Slack
+You first need to start an interactive shell
+If using the first method, use: ./trace_processor trace
+If using the python method: python2 trace_processor ./trace
+and then .dump trace.db
+exit the interactive shell with .q
+5. run the SQL against the trace.db file and export as csv: sqlite3 -header -csv /Users/rich/trace.db < /Users/rich/cpu.sql > /Users/rich/cpu.csv
+
+For convenience, scripts for steps 1, 4 and 5 can be found in Auditor/scripts/
+perfetto.sh: I have turned on all traces and saved it as a bash file. Execute this script to begin a long trace.
+trace_processor.py: this is a script Chris found when he was doing the IMC paper. Ask him where he got it from if there are any issues.
+cpu.sql: This is some SQL that Chris copied and modified to extract CPU measurements and timing to a CSV file.
+
+
+WIRELESS ADB
+1. adb devices
+2. adb tcpip 5555
+3. unplug device
+4. go to settings > About > Status and note the IP (Galaxy tablet is 192.168.1.193)
+5. Then adb connect <ip>:5555
+6. test again with adb devices - should see IP of device
+
+
+BATTERY HISTORIAN
+https://developer.android.com/topic/performance/power/setup-battery-historian
+https://developer.android.com/topic/performance/power/battery-historian
+
+NOTE: the command "docker run -p port_number:9999 gcr.io/android-battery-historian/stable:3.0 --port 9999" IS WRONG!
+change port_number to e.g. 9989 then when you connect, use localhost:9989
+
+1. reset battery stats: adb shell dumpsys batterystats --reset
+2. run some experiments
+3. adb shell dumpsys batterystats > batterstats.txt
+4. adb bugreport > bugreport.zip
+5. visit localhost:9989 in browser
+6. load the dumpstate.zip file
+
+
+
+filter logcat from terminal
+filter by package name
+adb logcat --pid=`adb shell pidof -s com.cambridge.audit`
+
+
+unzip NativeCamera.aar -d tempFolder
+jar cvf androidplugin.aar -C tempFolder .
+
+============================
+GOING FORWARD
+============================
+
+
+
+
