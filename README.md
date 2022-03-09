@@ -21,17 +21,19 @@ Droiditor will compile and the resulting `.aar` file will be put into the direct
 
 ## Importing Droiditor into your project
 
-1. Create a `libs` directory under `app`.
-2. Add the `droiditor.aar` file to this directory. If you updated the Droiditor build.gradle file and built the project, this file should be put here automatically (see building and exporting).
+1. Create a `libs` directory under `app` (or whatever your app directory is called).
+2. Add the `droiditor.aar` file to the `libs` directory. If you updated the Droiditor build.gradle file and built the project, this file should be put here automatically (see building and exporting).
 3. In your apps build.gradle file, add the following dependencies:
   * implementation(name:'droiditor', ext:'aar')
+  * implementation("com.squareup.okhttp3:okhttp:4.9.0")
   * implementation("commons-io:commons-io:2.8.0")
   * implementation("net.lightbody.bmp:browsermob-core:2.1.5"){
         exclude group: 'org.slf4j'
     }
   * implementation('net.lightbody.bmp:littleproxy:1.1.0-beta-bmp-17')
+  * implementation 'org.zeromq:jeromq:0.5.2'
 
-You will also likely need to declare the following package options in the `android` section:
+You _may_ also need to declare the following package options in the `android` section:
 
     packagingOptions {
         exclude '**/resources/*'
@@ -61,12 +63,14 @@ Droiditor provides a number of `Capture Mechanisms` - each capturing data from a
   * Captures all network traffic in and out of Droiditor. **Note: At the moment, Droiditor only captures HTTP/S requests and responses**
 * ControllerCapture [ConCap]
   * Captures input from controllers. **Note: At the moment, Droiditor only captures screen taps and gestures**
-  
+* GeneralCapture [GenCap]
+  * Essentially just a logger, it will capture any text provided.
+
 Capture mechanisms are configured and enabled via the `audit_config.xml` file, which must be placed in your applications `assets` directory.
-Below are a couple of example configurations.
+Below are a couple of example configurations. Note that for sensors, the ID may change as Android devices (and sensors) evolve, so if a sensor is not being detected, look up the correct sensor ID in the Android documentation.
 
 **Example 1: SensorCapture**
-  
+
     <mechanism name="sencap" enabled="true">
       <sensor>
           <name>TYPE_ORIENTATION</name>
@@ -85,11 +89,11 @@ Below are a couple of example configurations.
       </sensor>
       <output_directory>SENSOR_DATA</output_directory>
     </mechanism>
-        
+
 `name="sencap"` specifies that this bit of configuration deals with the SensorCapture mechanism, while `enabled="true"`specifies that the mechanism is enabled.
 Each `<sensor>` consists of `name`, `filename_prefix` and `id` nodes. `name` and `id` must match the specified names and constant values in the Android documentation (see https://developer.android.com/reference/android/hardware/Sensor#TYPE_ACCELEROMETER). `output_directory` specifies the name of the directory output data files should be put into.
 
-In the case of SensorCapture, a JSON file for each sensor will be created and written to. `filename_prefix` allows you to give a custom nametag to each file. 
+In the case of SensorCapture, a JSON file for each sensor will be created and written to. `filename_prefix` allows you to give a custom nametag to each file.
 
 **Example 2: ScreenCapture**
 
@@ -97,7 +101,7 @@ In the case of SensorCapture, a JSON file for each sensor will be created and wr
         <output_directory>SCREEN</output_directory>
         <filename_prefix>SCREENCAPTURE</filename_prefix>
     </mechanism>
-        
+
 Here, the ScreenCapture mechanism is enabled. The output video will be stored in the `SCREEN` directory and the filename will be prefixed with `SCREENCAPTURE`.
 
 You can also specify some general Droiditor configurations. For instance, you can specify how long data should be captured for, how long to wait before starting and where captured data should be stored:
@@ -114,16 +118,17 @@ Once imported and configured, Droiditor can be started with:
 
     Auditor.INSTANCE().initialize(this, config);
     Auditor.INSTANCE().start();
-    
-`config` in this case is a string representing the `audit_config.xml`. 
+
+`config` in this case is a string representing the `audit_config.xml`.
 In a later version, this will be done automatically.
 
 Droiditor will now capture data for any of the enabled capture mechanisms and store the data in whatever directory name you specified in the `output_directory` node for the `general` config.
 
-**Note:** CameraCapture and SnapShot need to be called from within code - they do not automatically capture data. This is because they take individual captures and as such, need to be used more like helpers:
+**Note:** CameraCapture, SnapShot and GenCap need to be called from within code - they do not automatically capture data. This is because they take individual captures and as such, need to be used more like helpers:
 
     Auditor.INSTANCE().screenShotCapture.takeScreenshot();
     Auditor.INSTANCE().cameraShotCapture.captureShotXR(frame);
+    Auditor.INSTANCE().genCap.log(some_text);
 
 ## Permissions and additional configuration
 
@@ -145,16 +150,16 @@ Some capture mechanisms, such as NetCap, ScreenCap and AudCap require permission
     if (requestCode == REQUEST_MEDIA_PROJECTION) {
         if (resultCode == RESULT_OK) {
             Auditor.INSTANCE().giveMediaProjectionPermission(resultCode,data);
-        } 
+        }
     }
-    
+
 
 ## Extending Droiditor
 
 Extending Droiditor is easy, but there are a few steps to it. First, you should create a new class, referencing the `ICaptureMechanism` interface:
 
     public class MyCaptureMechanism implements ICaptureMechanism{
-    
+
         @Override
         public boolean isReady() {
             return false;
@@ -180,9 +185,9 @@ Extending Droiditor is easy, but there are a few steps to it. First, you should 
             return null;
         }
     }
-    
+
 Implement the methods. Note the `isReady` and `getName` methods. `isReady` should return `true` when your capture mechanism is fully initialized/setup. `getName` returns `ENUMS.CaptureMechanism` and as such, you will need to add an additional capture mechanism to the CaptureMechanism enum located in `Enums.java`:
-    
+
     public enum CaptureMechanism {
 
         MICROPHONE("MICROPHONE"),
@@ -202,28 +207,34 @@ You can then modify `getName` to return your newly defined capture mechanism:
         return ENUMS.CaptureMechanism.MY_CAPTURE_MECHANISM;
     }
 
-So that your capture mechanism can access configurations specified in the `audit_config.xml` file, you must tweak `AuditConfigs.java`. Specifically, you need to create a config class, delcare your capture mechanism and update the switch statement in `initialiseConfigs`:
+So that your capture mechanism can access configurations specified in the `audit_config.xml` file, you must create a config class to go with your capture mechanism, e.g.:
 
-    public static class MyCaptureMechanismConfig extends CaptureConfigBase {}
-    public MyCaptureMechanismConfig myCaptureMechanismConfig = new MyCaptureMechanismConfig();
+    public class GeneralCaptureConfig  extends CaptureConfigBase implements IConfig {
 
-    public void initialiseConfigs(String config){
-        ....
-        ....
-        switch (captureMechanism){
-            ....
-            ....
-            case MY_CAPTURE_MECHANISM:
-                myCaptureMechanismConfig.enabled = true;
-                myCaptureMechanismConfig.filename_prefix = ...
-                myCaptureMechanismConfig.output_dir = ...
-                break;
+        @Override
+        public void parse(String config) {
+
+        }
+
+    }
+
+Finally, you need to add your capture mechanism to the `CaptureMechanismsRegistry.java`:
+
+    capture_mechanisms.add("com.cambridge.CaptureMechanisms.General.GeneralCapture, com.cambridge.DataTransformers.NoTransform, com.cambridge.DataLoggers.JSONDataLogger");
+
+
+That is all you need to do if you want to extend Droiditor. However, if you would prefer to not modify Droiditor itself, you can also inject your own capture mechanisms. For instance, create a Capture Mechanism and Config class as described above, and then register it with Droiditor using the `Auditor.INSTANCE().registerCaptureMechanism()` function.
+
+## Accessing individual capture mechanisms
+
+If you'd like to access individual Capture Mechansims, you can iterate over the `registeredCaptureMechanisms()`:
+
+    for (Map.Entry<String, ICaptureMechanism> entry :  Auditor.INSTANCE().registeredCaptureMechanisms.entrySet()) {
+        ICaptureMechanism captureMechanism = entry.getValue();
+        if (captureMechanism.getName().equals("com.cambridge.CaptureMechanisms.General.GeneralCapture")) {
+            generalCapture = (GeneralCapture) captureMechanism;
         }
     }
-          
-Finally, to make your capture mechanism accessible to devs, you need to declare it in `Auditor.java`:
-
-    public MyCaptureMechanism myCaptureMechanism = MyCaptureMechanism.INSTANCE();
 
 
 
