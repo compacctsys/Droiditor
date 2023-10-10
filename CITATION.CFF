@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Cloete"
+    given-names: "Richard"
+  - family-names: "Norval"
+    given-names: "Chris"
+  - family-names: "Singh"
+    given-names: "Jatinder"
+title: "Auditable Augmented/Mixed/Virtual Reality: The Practicalities of Mobile System Transparency"
+version: "2022"
+date-released: "2022-12-01"
+doi: "10.1145/3495001"
+url: "https://doi.org/10.1145/3495001"
+publisher:
+  name: "Association for Computing Machinery"
+  address: "New York, NY, USA"
+journal: "Proc. ACM Interact. Mob. Wearable Ubiquitous Technol."
+volume: "5"
+issue: "4"
+keywords: 
+  - "audit tooling"
+  - "transparency"
+  - "augmented/mixed/virtual reality"
+  - "Android"
+  - "accountability"
+  - "mobile/pervasive systems"
+  - "audit"
