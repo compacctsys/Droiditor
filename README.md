@@ -9,7 +9,8 @@ Example use-cases include:
 
 ## Publications
 
-Droiditor, its motivation, justification and broader context is describe in our IMWUT/Ubicomp paper: https://dl.acm.org/doi/pdf/10.1145/3495001
+Droiditor, its motivation, justification and broader context is describe in our IMWUT/Ubicomp paper: https://dl.acm.org/doi/pdf/10.1145/3495001.
+The paper also discusses some of the implications of recording data for transparency and audit, and some of the concerns and tensions that this raises. 
 
 Other relevant publications include:
 * A Call for Auditable Virtual, Augmented & Mixed Reality (ACM VRST): describes XR risks and harms, how they might arise, and surveys practitioners regarding audit and tooling landscape. https://dl.acm.org/doi/pdf/10.1145/3385956.3418960 
