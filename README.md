@@ -1,6 +1,6 @@
 # Droiditor
 
-Droiditor is an Android library that aims to support audit and transparency in mobile, ubiquitous and extended reality (XR) systems. It works capture---in real time---information about the nature and operation of an Android-based application, through recording information on the inputs, outputs from a device, as well as aspects of system state.
+Droiditor is an Android library to support audit and transparency in mobile, ubiquitous and extended reality (XR) systems. It works capture---in real time---information about the nature and operation of an Android-based application, through recording information on the inputs, outputs from a device, as well as aspects of system state.
 
 Example use-cases include:
 * to help support understand what the user was doing, how the system was behaving, and in which context it was being used -- perhaps when something went wrong
@@ -13,9 +13,10 @@ Droiditor, its motivation, justification and broader context is describe in our 
 The paper also discusses some of the implications of recording data for transparency and audit, and some of the concerns and tensions that this raises. 
 
 Other relevant publications include:
-* A Call for Auditable Virtual, Augmented & Mixed Reality (ACM VRST): describes XR risks and harms, how they might arise, and surveys practitioners regarding audit and tooling landscape. https://dl.acm.org/doi/pdf/10.1145/3385956.3418960 
-* Navigating the Audit Landscape: A Framework for Developing Transparent and Auditable XR  (ACM FAccT): describes a method/guide for developers on what to record from XR/ubicomp systems, and the implications. https://dl.acm.org/doi/pdf/10.1145/3593013.3594090
-* Accountability Capture: Considerations and risks in algorithmic system record-keeping (under review); This manuscript describes the risks, considerations and implications of record-keeping for system in general.
+* A Call for Auditable Virtual, Augmented & Mixed Reality (ACM VRST):: describes XR risks and harms, how they might arise, and surveys practitioners regarding audit and tooling landscape. https://dl.acm.org/doi/pdf/10.1145/3385956.3418960 
+* Navigating the Audit Landscape: A Framework for Developing Transparent and Auditable XR  (ACM FAccT):: describes a method/guide for developers on what to record from XR/ubicomp systems, and the implications. https://dl.acm.org/doi/pdf/10.1145/3593013.3594090
+* Accountability Capture: Considerations and risks in algorithmic system record-keeping (under review):: describes the risks, considerations and implications of record-keeping for system in general.
+* Reviewable Automated Decision-Making: A Framework for Accountable Algorithmic Systems:: covers the importance of being able to review, audit and interrogate systems more generally, highlighting some key considreations and challenges. https://dl.acm.org/doi/10.1145/3442188.3445921
 
 You can find a fuller list of our publications and learn more about the Compliant and Accountable Systems group, University of Cambridge, at: https://www.compacctsys.net/
 
