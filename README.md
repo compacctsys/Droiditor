@@ -6,6 +6,15 @@ Example use-cases include:
 * to understand what the user was doing, how the system was behaving, and in which context it was being used -- perhaps when something went wrong
 * to learn how to improve applications from a user or operation perspective -- perhaps to increase safety.
 
+## Publications
+
+To learn more about Droiditor and the motivation behind its development, see our publication: https://dl.acm.org/doi/pdf/10.1145/3495001
+
+Other relevant publications include:
+
+* A Call for Auditable Virtual, Augmented & Mixed Reality (ACM VRST); This manuscript describes XR risks and harms, and surveys practitioners regarding audit and tooling landscape. https://dl.acm.org/doi/pdf/10.1145/3385956.3418960 
+* Navigating the Audit Landscape: A Framework for Developing Transparent and Auditable XR  (ACM FAccT); This manuscript describes a method/guide for developers on what to record from XR/ubicomp systems, and the implications. https://dl.acm.org/doi/pdf/10.1145/3593013.3594090
+* Accountability Capture: Considerations and risks in algorithmic system record-keeping (under review); This manuscript describes the risks, considerations and implications of record-keeping for system in general.
 
 ## Building and exporting
 
