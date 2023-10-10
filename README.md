@@ -16,6 +16,8 @@ Other relevant publications include:
 * Navigating the Audit Landscape: A Framework for Developing Transparent and Auditable XR  (ACM FAccT); This manuscript describes a method/guide for developers on what to record from XR/ubicomp systems, and the implications. https://dl.acm.org/doi/pdf/10.1145/3593013.3594090
 * Accountability Capture: Considerations and risks in algorithmic system record-keeping (under review); This manuscript describes the risks, considerations and implications of record-keeping for system in general.
 
+You can find a full list of our publications and learn more about the Compliant and Accountable Systems group, University of Cambridge, at: https://www.compacctsys.net/
+
 ## Building and exporting
 
 1. Clone this repository
